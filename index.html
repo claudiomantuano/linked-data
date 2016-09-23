@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<link href="css/style.css" rel="stylesheet">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.js"></script>
+		<script type="text/javascript" src="js/sparql.js"></script>
+		<script type="text/javascript" src="js/index.js"></script>
+	</head>
+	<body ng-app="romajsODApp" ng-controller="opendata">
+		<div id="wrap">
+
+			<div class="container">
+		    <div class="page-header">
+					<form>
+			      <input type="text" class="form-control input-lg" placeholder="..." id="wanted" ng-model="wanted">
+						<button class="btn btn-lg btn-primary" ng-click="search()">Search</button>
+						<button class="btn btn-lg btn-info" ng-click="clean()">Clean</button>
+						<h6 id="progress">{{progress}}</h6>
+					</form>
+		    </div>
+
+			  <h3></h3>
+
+				<ul class="list-unstyled results">
+			  	<li data-ng-repeat="item in results track by $index" id="result_{{$index}}" ng-class="{'choose': selected===(item.id.value)}">
+						<div class="media" >
+			        <div class="media-body">
+								<h4 class="media-heading">
+									<a target="_blank" href="{{item.aic.value}}">{{item.title.value}}</a>
+								</h4>
+
+								<a target="_blank" href="{{item.primoFirmatario.value}}">{{item.primoFirmatario.value}}</a>
+								<a target="_blank" href="{{item.dbpedia.value}}">{{item.dbpedia.value}}</a>
+								<a href="#result_{{$index}}" class="dbpedia" ng-click="dbpediaSearch(item.id.value, item.dbpedia.value)">...dbpedia</a>
+
+									<div class="media" ng-show="dbpediaResults[item.id.value]">
+									  <div class="media-left">
+											 <img class="media-object dbpedia" ng-src="{{dbpediaResults[item.id.value].image}}" alt="">
+									  </div>
+									  <div class="media-body">
+									    <h5 class="media-heading">
+												{{dbpediaResults[item.id.value].name}}
+											</h5>
+											<a target="_blank" href="{{dbpediaResults[item.id.value].luogoNascita}}">{{dbpediaResults[item.id.value].luogoNascita}}</a>
+											<a href="#result_{{$index}}" class="dbpedia" ng-click="place(item.id.value, dbpediaResults[item.id.value].luogoNascita)">...places</a>
+
+											<div class="media" ng-show="places[item.id.value]">
+												<div class="media-left">
+													 <img class="media-object dbpedia" ng-src="{{places[item.id.value].thumbnail}}" alt="">
+												</div>
+												<div class="media-body">
+											    <h5 class="media-heading">
+														{{places[item.id.value].name}}
+														<br/>
+														{{places[item.id.value].lat}} - {{places[item.id.value].long}}
+													</h5>
+												</div>
+											</div>
+									  </div>
+									</div>
+
+
+			        </div>
+			      </div>
+			    </li>
+			  </ul>
+
+			</div>
+		</div>
+
+
+		<div id="footer">
+			<div class="container">
+				<p class="text-muted credit">Example for RomaJS <a href="#">Claudio Mantuano</a></p>
+			</div>
+		</div>
+
+	</body>
+</html>
